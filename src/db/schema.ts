@@ -5,22 +5,9 @@ import {
   timestamp,
   primaryKey,
   uniqueIndex,
+  datetime,
 } from "drizzle-orm/mysql-core";
 import { relations } from "drizzle-orm";
-
-export const users = mysqlTable(
-  "users",
-  {
-    id: int("id").autoincrement().notNull(),
-    email: varchar("email", { length: 255 }).notNull().unique(),
-    password: varchar("password", { length: 255 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-  },
-  (users) => [primaryKey(users.id), uniqueIndex("email_idx").on(users.email)],
-);
-
-export type User = typeof users.$inferSelect;
 
 export const locations = mysqlTable(
   "locations",
@@ -33,8 +20,6 @@ export const locations = mysqlTable(
   },
   (locations) => [primaryKey({ columns: [locations.id] })],
 );
-
-export type Location = typeof users.$inferSelect;
 
 export const books = mysqlTable(
   "books",
@@ -53,8 +38,6 @@ export const books = mysqlTable(
   ],
 );
 
-export type Book = typeof books.$inferSelect;
-
 export const inventory = mysqlTable(
   "inventory",
   {
@@ -67,8 +50,6 @@ export const inventory = mysqlTable(
   },
   (inventory) => [primaryKey({ columns: [inventory.id] })],
 );
-
-export type Inventory = typeof inventory.$inferSelect;
 
 export const rentals = mysqlTable(
   "rentals",
@@ -85,7 +66,22 @@ export const rentals = mysqlTable(
   (rentals) => [primaryKey({ columns: [rentals.id] })],
 );
 
-export type Rental = typeof rentals.$inferSelect;
+export const users = mysqlTable("user", {
+	id: int("id").primaryKey().autoincrement()
+});
+
+export const sessions = mysqlTable("session", {
+	id: varchar("id", {
+		length: 255
+	}).primaryKey(),
+	userId: int("user_id")
+		.notNull()
+		.references(() => users.id),
+	expiresAt: datetime("expires_at").notNull()
+});
+
+export type User = typeof users.$inferSelect;
+export type Session = typeof sessions.$inferSelect;
 
 export const usersRelations = relations(users, ({ many }) => ({
   rentals: many(rentals),
