@@ -1,43 +1,58 @@
 import { db } from "@/db";
-import { locations } from "@/db/schema";
+import { books, locations, inventory } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import Link from "next/link";
 
 export default async function Page({
   params,
 }: {
-  params: Promise<{ location: number }>;
+  params: { location: string };
 }) {
-  const { location } = await params;
+  const locationId = parseInt(params.location, 10);
+
+  if (isNaN(locationId)) {
+    return <div className="flex justify-center items-center min-h-screen text-red-500">Invalid location ID.</div>;
+  }
 
   try {
-    let locationsData = await db
-      .select()
+    const locationData = await db
+      .select({
+        name: locations.name,
+        address: locations.address,
+      })
       .from(locations)
-      .where(eq(locations.id, location));
+      .where(eq(locations.id, locationId));
+
+    if (locationData.length === 0) {
+      return <div className="flex justify-center items-center min-h-screen text-red-500">Location not found.</div>;
+    }
+
+    const booksAtLocation = await db
+      .select({
+        title: books.title,
+        quantity: inventory.quantity,
+      })
+      .from(inventory)
+      .innerJoin(books, eq(inventory.bookId, books.id))
+      .where(eq(inventory.locationId, locationId));
 
     return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Our Locations</h1>
-        {locationsData.length === 0 ? (
-          <p>No locations found.</p>
+        <h1 className="text-3xl font-bold mb-6 text-center">{locationData[0].name}</h1>
+        <p className="text-center text-gray-700 mb-8">{locationData[0].address}</p>
+
+        <h2 className="text-2xl font-semibold mb-4">Books Available</h2>
+
+        {booksAtLocation.length === 0 ? (
+          <p>No books available at this location.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {locationsData.map((location) => (
-              <Link
-                key={location.id}
-                href={`/locations/${location.id}`}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200"
-              >
-                <div
-                  key={location.id}
-                  className="bg-white rounded-lg shadow-md p-6"
-                >
-                  <h2 className="text-xl font-semibold">{location.name}</h2>
-                  <p className="text-gray-700 mt-1">{location.address}</p>
-                </div>
-              </Link>
+          <ul className="list-disc list-inside">
+            {booksAtLocation.map((book, index) => (
+              <li key={index} className="mb-2">
+                <span className="font-medium">{book.title}</span>: {book.quantity} copies
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </div>
     );
@@ -48,6 +63,4 @@ export default async function Page({
       </div>
     );
   }
-
-  return <h1>{location}</h1>;
 }
