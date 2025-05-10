@@ -1,10 +1,19 @@
-import { db } from "@/db"; // Adjust the import path to your db connection
-import { locations } from "@/db/schema"; // Import necessary tables
-import Link from "next/link";
+import { db } from "@/db";
+import { locations } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
-export default async function LocationsPage() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ location: number }>;
+}) {
+  const { location } = await params;
+
   try {
-    let locationsData = await db.select().from(locations);
+    let locationsData = await db
+      .select()
+      .from(locations)
+      .where(eq(locations.id, location));
 
     return (
       <div className="container mx-auto px-4 py-8">
@@ -39,4 +48,6 @@ export default async function LocationsPage() {
       </div>
     );
   }
+
+  return <h1>{location}</h1>;
 }
