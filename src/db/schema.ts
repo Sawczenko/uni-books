@@ -17,11 +17,10 @@ export const users = mysqlTable(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   },
-  (users) => ({
-    usersId: primaryKey(users.id),
-    emailIndex: uniqueIndex("email_idx").on(users.email),
-  })
+  (users) => [primaryKey(users.id), uniqueIndex("email_idx").on(users.email)],
 );
+
+export type User = typeof users.$inferSelect;
 
 export const locations = mysqlTable(
   "locations",
@@ -32,10 +31,10 @@ export const locations = mysqlTable(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   },
-  (locations) => ({
-    locationsId: primaryKey(locations.id),
-  })
+  (locations) => [primaryKey({ columns: [locations.id] })],
 );
+
+export type Location = typeof users.$inferSelect;
 
 export const books = mysqlTable(
   "books",
@@ -48,11 +47,13 @@ export const books = mysqlTable(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   },
-  (books) => ({
-    booksId: primaryKey(books.id),
-    isbnIndex: uniqueIndex("isbn_idx").on(books.isbn),
-  })
+  (books) => [
+    primaryKey({ columns: [books.id] }),
+    uniqueIndex("isbn_idx").on(books.isbn),
+  ],
 );
+
+export type Book = typeof books.$inferSelect;
 
 export const inventory = mysqlTable(
   "inventory",
@@ -64,10 +65,10 @@ export const inventory = mysqlTable(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   },
-  (inventory) => ({
-    inventoryId: primaryKey(inventory.id),
-  })
+  (inventory) => [primaryKey({ columns: [inventory.id] })],
 );
+
+export type Inventory = typeof inventory.$inferSelect;
 
 export const rentals = mysqlTable(
   "rentals",
@@ -81,10 +82,10 @@ export const rentals = mysqlTable(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   },
-  (rentals) => ({
-    rentalsId: primaryKey(rentals.id),
-  })
+  (rentals) => [primaryKey({ columns: [rentals.id] })],
 );
+
+export type Rental = typeof rentals.$inferSelect;
 
 export const usersRelations = relations(users, ({ many }) => ({
   rentals: many(rentals),

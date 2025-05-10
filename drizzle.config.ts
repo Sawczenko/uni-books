@@ -5,7 +5,7 @@ export default defineConfig({
   dbCredentials: {
     host: "localhost",
     port: 3306,
-    user: "root",
+    user: "books-user",
     password: "pass",
     database: "books",
   },
