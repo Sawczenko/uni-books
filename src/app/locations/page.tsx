@@ -23,7 +23,9 @@ export default async function LocationsPage() {
                   key={location.id}
                   className="bg-white rounded-lg shadow-md p-6"
                 >
-                  <h2 className="text-xl font-semibold">{location.name}</h2>
+                  <h2 className="text-gray-700 text-xl font-semibold">
+                    {location.name}
+                  </h2>
                   <p className="text-gray-700 mt-1">{location.address}</p>
                 </div>
               </Link>

@@ -1,5 +1,6 @@
 import { db } from "@/db"; // Adjust the import path to your db connection
 import { books } from "@/db/schema"; // Import necessary tables
+import Link from "next/link";
 
 export default async function BooksPage() {
   try {
@@ -15,16 +16,23 @@ export default async function BooksPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {booksData.map((book) => (
-              <div key={book.id} className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900">
-                  {book.title}
-                </h2>
-                <p className="text-gray-700 mt-1">by {book.author}</p>
-                <p className="text-gray-600 text-sm mt-2">ISBN: {book.isbn}</p>
-                <p className="text-gray-600 text-sm">
-                  Published: {book.publishedDate?.toLocaleDateString()}
-                </p>
-              </div>
+              <Link href={`/books/${book.id}`} key={book.id}>
+                <div
+                  key={book.id}
+                  className="bg-white rounded-lg shadow-md p-6"
+                >
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    {book.title}
+                  </h2>
+                  <p className="text-gray-700 mt-1">by {book.author}</p>
+                  <p className="text-gray-600 text-sm mt-2">
+                    ISBN: {book.isbn}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Published: {book.publishedDate?.toLocaleDateString()}
+                  </p>
+                </div>
+              </Link>
             ))}
           </div>
         )}
