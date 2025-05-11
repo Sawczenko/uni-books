@@ -6,6 +6,7 @@ import {
   primaryKey,
   uniqueIndex,
   datetime,
+  index,
 } from "drizzle-orm/mysql-core";
 import { relations } from "drizzle-orm";
 
@@ -66,19 +67,33 @@ export const rentals = mysqlTable(
   (rentals) => [primaryKey({ columns: [rentals.id] })],
 );
 
-export const users = mysqlTable("user", {
-	id: int("id").primaryKey().autoincrement()
-});
+export const users = mysqlTable(
+  "user",
+  {
+    id: int("id").primaryKey().autoincrement(),
+    username: varchar("username", {
+      length: 255,
+    }).notNull(),
+    passwordHash: varchar("password_hash", {
+      length: 255,
+    }).notNull(),
+  },
+  (users) => [index("username_idx").on(users.username)],
+);
 
-export const sessions = mysqlTable("session", {
-	id: varchar("id", {
-		length: 255
-	}).primaryKey(),
-	userId: int("user_id")
-		.notNull()
-		.references(() => users.id),
-	expiresAt: datetime("expires_at").notNull()
-});
+export const sessions = mysqlTable(
+  "session",
+  {
+    id: varchar("id", {
+      length: 255,
+    }).primaryKey(),
+    userId: int("user_id")
+      .notNull()
+      .references(() => users.id),
+    expiresAt: datetime("expires_at").notNull(),
+  },
+  (sessions) => [primaryKey({ columns: [sessions.id] })],
+);
 
 export type User = typeof users.$inferSelect;
 export type Session = typeof sessions.$inferSelect;

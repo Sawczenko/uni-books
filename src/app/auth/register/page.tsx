@@ -1,16 +1,15 @@
 "use client";
 
 import { useActionState } from "react";
-import { loginAction } from "../actions";
-import Link from "next/link";
+import { registerAction } from "../actions";
 
 const initialState = {
   code: 200,
   message: "",
 };
 
-const LoginPage = () => {
-  const [state, action] = useActionState(loginAction, initialState);
+export default function RegisterPage() {
+  const [state, action] = useActionState(registerAction, initialState);
 
   return (
     <form action={action}>
@@ -20,10 +19,11 @@ const LoginPage = () => {
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="username"
           >
-            Email
+            Username
           </label>
           <input
             name="username"
+            type="text"
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -36,7 +36,6 @@ const LoginPage = () => {
             Password
           </label>
           <input
-            id="password"
             name="password"
             type="password"
             required
@@ -50,18 +49,9 @@ const LoginPage = () => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Login
-        </button>
-        <p className="text-black text-center">or</p>
-        <Link
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center"
-          href="/auth/register"
-        >
           Create Account
-        </Link>
+        </button>
       </div>
     </form>
   );
-};
-
-export default LoginPage;
+}
