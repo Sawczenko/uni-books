@@ -15,7 +15,6 @@ CREATE TABLE `inventory` (
 	`id` int AUTO_INCREMENT NOT NULL,
 	`book_id` int NOT NULL,
 	`location_id` int NOT NULL,
-	`quantity` int NOT NULL DEFAULT 0,
 	`created_at` timestamp DEFAULT (now()),
 	`updated_at` timestamp DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `inventory_id_pk` PRIMARY KEY(`id`)
@@ -35,8 +34,6 @@ CREATE TABLE `rentals` (
 	`user_id` int NOT NULL,
 	`inventory_id` int NOT NULL,
 	`rental_date` timestamp NOT NULL DEFAULT (now()),
-	`due_date` timestamp NOT NULL,
-	`return_date` timestamp,
 	`created_at` timestamp DEFAULT (now()),
 	`updated_at` timestamp DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `rentals_id_pk` PRIMARY KEY(`id`)

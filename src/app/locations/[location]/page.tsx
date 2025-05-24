@@ -1,17 +1,28 @@
+import { getCurrentSession } from "@/app/auth/session";
 import { db } from "@/db";
-import { books, locations, inventory } from "@/db/schema";
+import { locations, inventory } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import Link from "next/link";
+import { redirect } from "next/navigation";
+import BookAtLocation from "./components/bookAtLocation";
 
 export default async function Page({
   params,
 }: {
-  params: { location: string };
+  params: Promise<{ location: string }>;
 }) {
-  const locationId = parseInt(params.location, 10);
+  const locationId = +(await params).location;
+  const { user } = await getCurrentSession();
+
+  if (!user) {
+    redirect("/auth/login");
+  }
 
   if (isNaN(locationId)) {
-    return <div className="flex justify-center items-center min-h-screen text-red-500">Invalid location ID.</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen text-red-500">
+        Invalid location ID.
+      </div>
+    );
   }
 
   try {
@@ -24,36 +35,38 @@ export default async function Page({
       .where(eq(locations.id, locationId));
 
     if (locationData.length === 0) {
-      return <div className="flex justify-center items-center min-h-screen text-red-500">Location not found.</div>;
+      return (
+        <div className="flex justify-center items-center min-h-screen text-red-500">
+          Location not found.
+        </div>
+      );
     }
 
-    const booksAtLocation = await db
-      .select({
-        title: books.title,
-        quantity: inventory.quantity,
+    const bookIdsAtLocation = await db
+      .selectDistinct({
+        bookId: inventory.bookId,
       })
       .from(inventory)
-      .innerJoin(books, eq(inventory.bookId, books.id))
       .where(eq(inventory.locationId, locationId));
 
+    if (bookIdsAtLocation.length === 0) {
+      return (
+        <div className="flex justify-center items-center min-h-screen text-red-500">
+          No books found at this location.
+        </div>
+      );
+    }
+
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">{locationData[0].name}</h1>
-        <p className="text-center text-gray-700 mb-8">{locationData[0].address}</p>
-
-        <h2 className="text-2xl font-semibold mb-4">Books Available</h2>
-
-        {booksAtLocation.length === 0 ? (
-          <p>No books available at this location.</p>
-        ) : (
-          <ul className="list-disc list-inside">
-            {booksAtLocation.map((book, index) => (
-              <li key={index} className="mb-2">
-                <span className="font-medium">{book.title}</span>: {book.quantity} copies
-              </li>
-            ))}
-          </ul>
-        )}
+      <div>
+        {bookIdsAtLocation.map((book) => (
+          <BookAtLocation
+            key={book.bookId}
+            bookId={book.bookId}
+            locationId={locationId}
+            userId={user.id}
+          />
+        ))}
       </div>
     );
   } catch (err: any) {

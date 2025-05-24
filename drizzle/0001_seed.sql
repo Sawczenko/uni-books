@@ -13,18 +13,77 @@ INSERT INTO books (title, author, isbn, published_date) VALUES
 ('To Kill a Mockingbird', 'Harper Lee', '978-0061120084', '1979-07-11 00:00:00');
 
 -- Insert data into the 'inventory' table
-INSERT INTO inventory (book_id, location_id, quantity) VALUES
-(1, 1, 5), -- The Witcher at Biblioteka Główna AGH
-(1, 2, 3), -- The Witcher at Biblioteka Uniwersytecka w Warszawie
-(2, 1, 2), -- Fahrenheit 451 at Biblioteka Główna AGH
-(3, 3, 7), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
-(4, 2, 4), -- Pride and Prejudice at Biblioteka Uniwersytecka w Warszawie
-(5, 1, 6), -- To Kill a Mockingbird at Biblioteka Główna AGH
-(2, 2, 5), -- Fahrenheit 451 at Biblioteka Uniwersytecka w Warszawie
-(3, 1, 3), -- 1984 at Biblioteka Główna AGH
-(4, 3, 8), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
-(5, 2, 2), -- To Kill a Mockingbird at Biblioteka Uniwersytecka w Warszawie
-(1, 3, 4), -- The Witcher at Wojewódzka Biblioteka Publiczna w Gdańsku
-(5, 3, 1), -- To Kill a Mockingbird at Wojewódzka Biblioteka Publiczna w Gdańsku
-(2, 3, 3), -- Fahrenheit 451 at Wojewódzka Biblioteka Publiczna w Gdańsku
-(3, 2, 6); -- 1984 at Biblioteka Uniwersytecka w Warszawie
+INSERT INTO inventory (book_id, location_id) VALUES
+(1, 1), -- The Witcher at Biblioteka Główna AGH
+(1, 1), -- The Witcher at Biblioteka Główna AGH
+(1, 1), -- The Witcher at Biblioteka Główna AGH
+(1, 1), -- The Witcher at Biblioteka Główna AGH
+(1, 1), -- The Witcher at Biblioteka Główna AGH
+(1, 1), -- The Witcher at Biblioteka Główna AGH
+(1, 2), -- The Witcher at Biblioteka Uniwersytecka w Warszawie
+(1, 2), -- The Witcher at Biblioteka Uniwersytecka w Warszawie
+(1, 2), -- The Witcher at Biblioteka Uniwersytecka w Warszawie
+(1, 2), -- The Witcher at Biblioteka Uniwersytecka w Warszawie
+(2, 1), -- Fahrenheit 451 at Biblioteka Główna AGH
+(2, 1), -- Fahrenheit 451 at Biblioteka Główna AGH
+(2, 1), -- Fahrenheit 451 at Biblioteka Główna AGH
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 3), -- 1984 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 2), -- Pride and Prejudice at Biblioteka Uniwersytecka w Warszawie
+(4, 2), -- Pride and Prejudice at Biblioteka Uniwersytecka w Warszawie
+(4, 2), -- Pride and Prejudice at Biblioteka Uniwersytecka w Warszawie
+(4, 2), -- Pride and Prejudice at Biblioteka Uniwersytecka w Warszawie
+(4, 2), -- Pride and Prejudice at Biblioteka Uniwersytecka w Warszawie
+(5, 1), -- To Kill a Mockingbird at Biblioteka Główna AGH
+(5, 1), -- To Kill a Mockingbird at Biblioteka Główna AGH
+(5, 1), -- To Kill a Mockingbird at Biblioteka Główna AGH
+(5, 1), -- To Kill a Mockingbird at Biblioteka Główna AGH
+(5, 1), -- To Kill a Mockingbird at Biblioteka Główna AGH
+(5, 1), -- To Kill a Mockingbird at Biblioteka Główna AGH
+(5, 1), -- To Kill a Mockingbird at Biblioteka Główna AGH
+(2, 2), -- Fahrenheit 451 at Biblioteka Uniwersytecka w Warszawie
+(2, 2), -- Fahrenheit 451 at Biblioteka Uniwersytecka w Warszawie
+(2, 2), -- Fahrenheit 451 at Biblioteka Uniwersytecka w Warszawie
+(2, 2), -- Fahrenheit 451 at Biblioteka Uniwersytecka w Warszawie
+(2, 2), -- Fahrenheit 451 at Biblioteka Uniwersytecka w Warszawie
+(2, 2), -- Fahrenheit 451 at Biblioteka Uniwersytecka w Warszawie
+(3, 1), -- 1984 at Biblioteka Główna AGH
+(3, 1), -- 1984 at Biblioteka Główna AGH
+(3, 1), -- 1984 at Biblioteka Główna AGH
+(3, 1), -- 1984 at Biblioteka Główna AGH
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(4, 3), -- Pride and Prejudice at Wojewódzka Biblioteka Publiczna w Gdańsku
+(5, 2), -- To Kill a Mockingbird at Biblioteka Uniwersytecka w Warszawie
+(5, 2), -- To Kill a Mockingbird at Biblioteka Uniwersytecka w Warszawie
+(5, 2), -- To Kill a Mockingbird at Biblioteka Uniwersytecka w Warszawie
+(1, 3), -- The Witcher at Wojewódzka Biblioteka Publiczna w Gdańsku
+(1, 3), -- The Witcher at Wojewódzka Biblioteka Publiczna w Gdańsku
+(1, 3), -- The Witcher at Wojewódzka Biblioteka Publiczna w Gdańsku
+(1, 3), -- The Witcher at Wojewódzka Biblioteka Publiczna w Gdańsku
+(1, 3), -- The Witcher at Wojewódzka Biblioteka Publiczna w Gdańsku
+(5, 3), -- To Kill a Mockingbird at Wojewódzka Biblioteka Publiczna w Gdańsku
+(5, 3), -- To Kill a Mockingbird at Wojewódzka Biblioteka Publiczna w Gdańsku
+(2, 3), -- Fahrenheit 451 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(2, 3), -- Fahrenheit 451 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(2, 3), -- Fahrenheit 451 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(2, 3), -- Fahrenheit 451 at Wojewódzka Biblioteka Publiczna w Gdańsku
+(3, 2), -- 1984 at Biblioteka Uniwersytecka w Warszawie
+(3, 2), -- 1984 at Biblioteka Uniwersytecka w Warszawie
+(3, 2), -- 1984 at Biblioteka Uniwersytecka w Warszawie
+(3, 2), -- 1984 at Biblioteka Uniwersytecka w Warszawie
+(3, 2), -- 1984 at Biblioteka Uniwersytecka w Warszawie
+(3, 2), -- 1984 at Biblioteka Uniwersytecka w Warszawie
+(3, 2); -- 1984 at Biblioteka Uniwersytecka w Warszawie

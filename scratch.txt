@@ -1,5 +1,0 @@
-'{ id: number; title: string; author: string; isbn: string; publishedDate: Date | null; locationName: string | null; quantity: number | null; }[]'
-'{ id: number; title: string; author: string; isbn: string; publishedDate: Date | null; createdAt: Date | null; updatedAt: Date | null; }[]'.
-  Type '{ id: number; title: string; author: string; isbn: string; publishedDate: Date | null; locationName: string | null; quantity: number | null; }' is missing the following properties from type '{ i
-  d: number; title: string; author: string; isbn: string; publishedDate: Date | null; createdAt: Date | null; updatedAt: Date | null; }': createdAt, updatedAt [2345]
-

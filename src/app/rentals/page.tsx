@@ -1,9 +1,10 @@
 import { db } from "@/db"; // Adjust the import path to your db connection
-import { rentals, inventory } from "@/db/schema"; // Import necessary tables
+import { rentals, inventory, books, locations } from "@/db/schema"; // Import necessary tables
 import Link from "next/link";
 import { getCurrentSession } from "../auth/session";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
+import { ReturnButton } from "@/app/locations/[location]/components/rentButton";
 
 export default async function LocationsPage() {
   try {
@@ -17,6 +18,8 @@ export default async function LocationsPage() {
       .select()
       .from(rentals)
       .innerJoin(inventory, eq(rentals.inventoryId, inventory.id))
+      .innerJoin(books, eq(inventory.bookId, books.id))
+      .innerJoin(locations, eq(locations.id, inventory.locationId))
       .where(eq(rentals.userId, user.id));
 
     if (rentalData.length === 0) {
@@ -48,22 +51,25 @@ export default async function LocationsPage() {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Your rentals</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {rentalData.map((rental) => (
-            <Link
-              key={rental.id}
-              href={`/books/${rental.bookId}`}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200"
-            >
+          {rentalData.map(({ rentals, books, locations }) => (
+            <div key={rentals.id} className="flex justify-center align-middle">
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-gray-700 text-xl font-semibold">
-                  {rental.book.title}
+                  {books.title}
                 </h2>
-                <p className="text-gray-700 mt-1">{rental.book.author}</p>
+                <p className="text-gray-700 mt-1">{books.author}</p>
                 <p className="text-gray-600 text-sm mt-2">
-                  Rented from: {rental.location.name}
+                  Rented from: {locations.name}
                 </p>
               </div>
-            </Link>
+              <div className="py-10">
+                <ReturnButton
+                  inventoryId={rentals.inventoryId}
+                  userId={user.id}
+                  locationId={locations.id}
+                />
+              </div>
+            </div>
           ))}
         </div>
       </div>

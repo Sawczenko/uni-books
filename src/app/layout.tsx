@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { getCurrentSession } from "@/app/auth/session";
 import LougoutButton from "@/app/auth/logoutButton";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,8 +45,11 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {!onAuthPage && (
-          <div className="bg-gray-100 text-end">
-            <div className="flex flex-row-reverse align-center bg-white shadow-md p-4 gap-4">
+          <div className="px-12 w-full flex flex-row justify-between bg-white shadow-md p-4">
+            <Link className="py-2 text-xl text-white" href="/">
+              Home
+            </Link>
+            <div className="flex flex-row gap-4">
               <LougoutButton />
               <p className="text-xl text-gray-700 py-2">
                 Hello {user?.username}

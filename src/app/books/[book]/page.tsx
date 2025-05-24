@@ -3,8 +3,12 @@ import { books, locations, inventory } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
 
-export default async function Page({ params }: { params: { book: string } }) {
-  const bookId = parseInt(params.book, 10);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ book: string }>;
+}) {
+  const bookId = parseInt((await params).book, 10);
 
   if (isNaN(bookId)) {
     return (
@@ -34,7 +38,7 @@ export default async function Page({ params }: { params: { book: string } }) {
     }
 
     const locationsForBook = await db
-      .select({
+      .selectDistinct({
         id: locations.id,
         name: locations.name,
         address: locations.address,
