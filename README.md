@@ -21,4 +21,7 @@ npm install
 ```
 
 ### Running in development
+```bash
+export DATABASE_URL="mysql://books-user:pass@localhost:3306/books"
 npm run dev
+```
