@@ -21,7 +21,7 @@ export function RentButton({
       <input type="hidden" name="locationId" value={locationId} />
       <button
         type="submit"
-        className="bg-white rounded-lg shadow-md p-2 text-gray-700 hover:bg-gray-100"
+        className="rounded-lg shadow-md p-2 text-white font-bold bg-blue-500 hover:bg-blue-700"
       >
         Rent
       </button>
@@ -47,7 +47,7 @@ export function ReturnButton({
       <input type="hidden" name="locationId" value={locationId} />
       <button
         type="submit"
-        className="bg-white rounded-lg shadow-md p-2 text-gray-700 hover:bg-gray-100"
+        className="rounded-lg shadow-md p-2 text-white font-bold bg-blue-500 hover:bg-blue-700"
       >
         Return
       </button>

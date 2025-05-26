@@ -25,14 +25,12 @@ export const metadata: Metadata = {
 const AUTH_ROUTES = ["/auth/login", "/auth/register"];
 
 export default async function RootLayout({
-  children,
-}: Readonly<{
+                                           children,
+                                         }: Readonly<{
   children: React.ReactNode;
 }>) {
   const path = (await headers()).get("next-url") || "";
-  console.log("path", path);
   const { session, user } = await getCurrentSession();
-
   const onAuthPage = AUTH_ROUTES.some((p) => path.indexOf(p) !== -1);
 
   if (!onAuthPage && (!session || !user)) {
@@ -40,25 +38,27 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+      <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        {!onAuthPage && (
-          <div className="px-12 w-full flex flex-row justify-between bg-white shadow-md p-4">
-            <Link className="py-2 text-xl text-white" href="/">
-              Home
-            </Link>
-            <div className="flex flex-row gap-4">
-              <LougoutButton />
-              <p className="text-xl text-gray-700 py-2">
-                Hello {user?.username}
-              </p>
+      {!onAuthPage && (
+          <header className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200">
+            <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+              <Link href="/" className="text-2xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
+                  📘 Library
+              </Link>
+              <div className="flex items-center gap-4">
+                <p className="text-gray-700 text-base">
+                  Hello, <span className="font-semibold">{user?.username}</span>
+                </p>
+                <LougoutButton />
+              </div>
             </div>
-          </div>
-        )}
-        {children}
+          </header>
+      )}
+      {children}
       </body>
-    </html>
+      </html>
   );
 }
