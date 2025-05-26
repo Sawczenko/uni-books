@@ -1,8 +1,8 @@
-import { getCurrentSession } from "@/app/auth/session";
-import { db } from "@/db";
-import { locations, inventory, books } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { redirect } from "next/navigation";
+import {getCurrentSession} from "@/app/auth/session";
+import {db} from "@/db";
+import {locations, inventory, books} from "@/db/schema";
+import {eq} from "drizzle-orm";
+import {redirect} from "next/navigation";
 import BookAtLocation from "./components/bookAtLocation";
 import SearchForm from "./components/searchForm";
 
@@ -17,7 +17,7 @@ export default async function Page({
     const locationId = +params.location;
     const searchTerm = (searchParams?.searchTerm ?? "").toLowerCase();
 
-    const { user } = await getCurrentSession();
+    const {user} = await getCurrentSession();
 
     if (!user) {
         redirect("/auth/login");
@@ -65,7 +65,7 @@ export default async function Page({
         if (filteredBooks.length === 0) {
             return (
                 <div className="container mx-auto px-4 py-6 text-red-500">
-                    <SearchForm />
+                    <SearchForm/>
                     No books match the filter criteria.
                 </div>
             );
@@ -75,7 +75,7 @@ export default async function Page({
 
         return (
             <div className="container mx-auto px-4 py-6">
-                <SearchForm />
+                <SearchForm/>
                 <h2 className="text-xl font-semibold text-gray-800 mt-4">
                     {locationName}
                 </h2>

@@ -1,6 +1,6 @@
-import { db } from "@/db";
-import { books, locations, inventory } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import {db} from "@/db";
+import {books, locations, inventory} from "@/db/schema";
+import {eq} from "drizzle-orm";
 import Link from "next/link";
 
 export default async function Page({
@@ -69,7 +69,8 @@ export default async function Page({
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                             {locationsForBook.map((loc) => (
                                 <Link href={`/locations/${loc.id}`} key={loc.id}>
-                                    <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition cursor-pointer">
+                                    <div
+                                        className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition cursor-pointer">
                                         <h3 className="text-xl font-bold text-gray-800 mb-1">
                                             📍 {loc.name}
                                         </h3>
