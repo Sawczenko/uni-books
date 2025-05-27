@@ -6,8 +6,7 @@ import {db} from "@/db";
 import {eq} from "drizzle-orm";
 import bcrypt from "bcrypt";
 import {createSession, generateSessionToken} from "./api";
-import {redirect, RedirectType} from "next/navigation";
-import {revalidatePath} from "next/cache";
+import {redirect} from "next/navigation";
 
 export const loginAction = async (
     _prev: ActionResult,

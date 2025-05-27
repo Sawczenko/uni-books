@@ -4,7 +4,7 @@ import {db} from "@/db";
 import {rentals} from "@/db/schema";
 import {revalidatePath} from "next/cache";
 
-import {eq, and} from "drizzle-orm";
+import {and, eq} from "drizzle-orm";
 
 export async function rentBook(_: any, formData: FormData) {
     const inventoryId = Number(formData.get("inventoryId"));

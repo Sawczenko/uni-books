@@ -1,11 +1,8 @@
-import type {User, Session} from "@/db/schema";
-import {users, sessions} from "@/db/schema";
+import type {Session, User} from "@/db/schema";
+import {sessions, users} from "@/db/schema";
 import {db} from "@/db";
 import {eq} from "drizzle-orm";
-import {
-    encodeBase32LowerCaseNoPadding,
-    encodeHexLowerCase,
-} from "@oslojs/encoding";
+import {encodeBase32LowerCaseNoPadding, encodeHexLowerCase,} from "@oslojs/encoding";
 import {sha256} from "@oslojs/crypto/sha2";
 import {NextApiResponse} from "next";
 

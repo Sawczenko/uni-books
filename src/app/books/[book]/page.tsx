@@ -1,5 +1,5 @@
 import {db} from "@/db";
-import {books, locations, inventory} from "@/db/schema";
+import {books, inventory, locations} from "@/db/schema";
 import {eq} from "drizzle-orm";
 import Link from "next/link";
 

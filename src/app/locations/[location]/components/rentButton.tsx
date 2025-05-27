@@ -1,7 +1,7 @@
 "use client";
 
 import {useActionState} from "react";
-import {returnBook, rentBook} from "../actions";
+import {rentBook, returnBook} from "../actions";
 
 export function RentButton({
                                inventoryId,

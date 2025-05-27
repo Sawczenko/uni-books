@@ -1,13 +1,4 @@
-import {
-    mysqlTable,
-    int,
-    varchar,
-    timestamp,
-    primaryKey,
-    uniqueIndex,
-    datetime,
-    index,
-} from "drizzle-orm/mysql-core";
+import {datetime, index, int, mysqlTable, primaryKey, timestamp, uniqueIndex, varchar,} from "drizzle-orm/mysql-core";
 import {relations} from "drizzle-orm";
 
 export const locations = mysqlTable(

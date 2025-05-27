@@ -1,5 +1,5 @@
 import {db} from "@/db";
-import {rentals, inventory, books, locations} from "@/db/schema";
+import {books, inventory, locations, rentals} from "@/db/schema";
 import Link from "next/link";
 import {getCurrentSession} from "../auth/session";
 import {redirect} from "next/navigation";

@@ -1,8 +1,7 @@
 "use server";
 import {cache} from "react";
 import {cookies} from "next/headers";
-import {invalidateAllSessions, validateSessionToken} from "./api";
-import {SessionValidationResult} from "./api";
+import {invalidateAllSessions, SessionValidationResult, validateSessionToken} from "./api";
 import {redirect} from "next/navigation";
 
 export const getCurrentSession = cache(

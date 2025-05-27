@@ -1,6 +1,6 @@
 import {db} from "@/db";
-import {and, eq, count} from "drizzle-orm";
-import {rentals, inventory, books} from "@/db/schema";
+import {and, count, eq} from "drizzle-orm";
+import {books, inventory, rentals} from "@/db/schema";
 import {RentButton, ReturnButton} from "./rentButton";
 
 export default async function BookAtLocation({
