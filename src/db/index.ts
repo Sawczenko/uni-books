@@ -1,20 +1,14 @@
-import {drizzle} from 'drizzle-orm/mysql2';
-import mysql from 'mysql2/promise';
-import * as schema from './schema';
+import 'dotenv/config'
 
-// Assuming DATABASE_URL environment variable is in the format:
-// mysql://user:password@host:port/database
-const databaseUrl = process.env.DATABASE_URL;
+import { drizzle } from 'drizzle-orm/postgres-js'
+import postgres from 'postgres'
 
-if (!databaseUrl) {
-    throw new Error('DATABASE_URL environment variable is not set.');
+const connectionString = process.env.POSTGRES_URL
+
+if (connectionString === undefined) {
+    throw new Error('DB connection string is missing')
 }
 
-const connection = mysql.createPool(databaseUrl);
-
-export const db = drizzle(
-    connection,
-    {
-        schema,
-        mode: "default",
-    });
+// Disable prefetch as it is not supported for "Transaction" pool mode
+export const client = postgres(connectionString, { prepare: false })
+export const db = drizzle(client);

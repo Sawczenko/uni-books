@@ -92,7 +92,7 @@ export default async function Page({
         }
         return (
             <div className="flex justify-center items-center min-h-screen text-red-500">
-                Error loading locations: {errorMessage} 
+                Error loading locations: {errorMessage}
             </div>
         );
     }

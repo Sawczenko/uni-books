@@ -1,104 +1,108 @@
-import {datetime, index, int, mysqlTable, primaryKey, timestamp, uniqueIndex, varchar,} from "drizzle-orm/mysql-core";
-import {relations} from "drizzle-orm";
+// lib/schema.ts
+import {
+    pgTable,
+    text,
+    timestamp,
+    integer,
+    primaryKey,
+    uniqueIndex,
+    index,
+    varchar,
+    serial,
+    uuid,
+    date,
+} from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 
-export const locations = mysqlTable(
-    "locations",
+export const locations = pgTable(
+    'locations',
     {
-        id: int("id").autoincrement().notNull(),
-        name: varchar("name", {length: 255}).notNull(),
-        address: varchar("address", {length: 255}).notNull(),
-        createdAt: timestamp("created_at").defaultNow(),
-        updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+        id: serial('id').notNull(),
+        name: text('name').notNull(),
+        address: text('address').notNull(),
+        createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+        updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
     },
-    (locations) => [primaryKey({columns: [locations.id]})],
+    (locations) => [primaryKey({ columns: [locations.id] })],
 );
 
-export const books = mysqlTable(
-    "books",
+export const books = pgTable(
+    'books',
     {
-        id: int("id").autoincrement().notNull(),
-        title: varchar("title", {length: 255}).notNull(),
-        author: varchar("author", {length: 255}).notNull(),
-        isbn: varchar("isbn", {length: 255}).notNull().unique(),
-        publishedDate: timestamp("published_date"),
-        createdAt: timestamp("created_at").defaultNow(),
-        updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+        id: serial('id').notNull(),
+        title: text('title').notNull(),
+        author: text('author').notNull(),
+        isbn: text('isbn').notNull(),
+        publishedDate: timestamp('published_date', { withTimezone: true }),
+        createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+        updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
     },
     (books) => [
-        primaryKey({columns: [books.id]}),
-        uniqueIndex("isbn_idx").on(books.isbn),
+        primaryKey({ columns: [books.id] }),
+        uniqueIndex('isbn_idx').on(books.isbn),
     ],
 );
 
-export const inventory = mysqlTable(
-    "inventory",
+export const inventory = pgTable(
+    'inventory',
     {
-        id: int("id").autoincrement().notNull(),
-        bookId: int("book_id").notNull(),
-        locationId: int("location_id").notNull(),
-        createdAt: timestamp("created_at").defaultNow(),
-        updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+        id: serial('id').notNull(),
+        bookId: integer('book_id').notNull(),
+        locationId: integer('location_id').notNull(),
+        createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+        updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
     },
-    (inventory) => [primaryKey({columns: [inventory.id]})],
+    (inventory) => [primaryKey({ columns: [inventory.id] })],
 );
 
-export const rentals = mysqlTable(
-    "rentals",
+export const rentals = pgTable(
+    'rentals',
     {
-        id: int("id").autoincrement().notNull(),
-        userId: int("user_id").notNull(),
-        inventoryId: int("inventory_id").notNull(),
-        rentalDate: timestamp("rental_date").notNull().defaultNow(),
-        createdAt: timestamp("created_at").defaultNow(),
-        updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+        id: serial('id').notNull(),
+        userId: integer('user_id').notNull(),
+        inventoryId: integer('inventory_id').notNull(),
+        rentalDate: timestamp('rental_date', { withTimezone: true }).notNull().defaultNow(),
+        createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+        updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
     },
-    (rentals) => [primaryKey({columns: [rentals.id]})],
+    (rentals) => [primaryKey({ columns: [rentals.id] })],
 );
 
-export const users = mysqlTable(
-    "user",
+export const users = pgTable(
+    'user',
     {
-        id: int("id").primaryKey().autoincrement(),
-        username: varchar("username", {
-            length: 255,
-        }).notNull(),
-        passwordHash: varchar("password_hash", {
-            length: 255,
-        }).notNull(),
+        id: serial('id').primaryKey(),
+        username: text('username').notNull(),
+        passwordHash: text('password_hash').notNull(),
     },
-    (users) => [index("username_idx").on(users.username)],
+    (users) => [index('username_idx').on(users.username)],
 );
 
-export const sessions = mysqlTable(
-    "session",
+export const sessions = pgTable(
+    'session',
     {
-        id: varchar("id", {
-            length: 255,
-        }).primaryKey(),
-        userId: int("user_id")
-            .notNull()
-            .references(() => users.id),
-        expiresAt: datetime("expires_at").notNull(),
+        id: text('id').primaryKey(),
+        userId: integer('user_id').notNull().references(() => users.id),
+        expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     },
-    (sessions) => [primaryKey({columns: [sessions.id]})],
 );
 
 export type User = typeof users.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 
-export const usersRelations = relations(users, ({many}) => ({
+export const usersRelations = relations(users, ({ many }) => ({
     rentals: many(rentals),
 }));
 
-export const locationsRelations = relations(locations, ({many}) => ({
+export const locationsRelations = relations(locations, ({ many }) => ({
     inventory: many(inventory),
 }));
 
-export const booksRelations = relations(books, ({many}) => ({
+export const booksRelations = relations(books, ({ many }) => ({
     inventory: many(inventory),
 }));
 
-export const inventoryRelations = relations(inventory, ({one, many}) => ({
+export const inventoryRelations = relations(inventory, ({ one, many }) => ({
     book: one(books, {
         fields: [inventory.bookId],
         references: [books.id],
@@ -110,7 +114,7 @@ export const inventoryRelations = relations(inventory, ({one, many}) => ({
     rentals: many(rentals),
 }));
 
-export const rentalsRelations = relations(rentals, ({one}) => ({
+export const rentalsRelations = relations(rentals, ({ one }) => ({
     user: one(users, {
         fields: [rentals.userId],
         references: [users.id],
