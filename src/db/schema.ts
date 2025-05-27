@@ -7,10 +7,7 @@ import {
     primaryKey,
     uniqueIndex,
     index,
-    varchar,
     serial,
-    uuid,
-    date,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
