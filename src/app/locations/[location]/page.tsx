@@ -1,6 +1,6 @@
 import {getCurrentSession} from "@/app/auth/session";
 import {db} from "@/db";
-import {locations, inventory, books} from "@/db/schema";
+import {books, inventory, locations} from "@/db/schema";
 import {eq} from "drizzle-orm";
 import {redirect} from "next/navigation";
 import BookAtLocation from "./components/bookAtLocation";
