@@ -6,15 +6,14 @@ import {redirect} from "next/navigation";
 import BookAtLocation from "./components/bookAtLocation";
 import SearchForm from "./components/searchForm";
 
-export default async function Page({
-                                       params,
-                                       searchParams,
-                                   }: {
-    params: { location: string };
-    searchParams: { searchTerm?: string };
-}) {
+type Params = Promise<{ location?: string; searchTerm?: string; }>
 
-    const locationId = +params.location;
+
+export default async function Page(props: { params: Params }) {
+
+    const searchParams = await props.params;
+
+    const locationId = +(searchParams?.location ?? '');
     const searchTerm = (searchParams?.searchTerm ?? "").toLowerCase();
 
     const {user} = await getCurrentSession();
@@ -91,10 +90,15 @@ export default async function Page({
                 </div>
             </div>
         );
-    } catch (err: any) {
+    } catch (err: unknown) {
+        let errorMessage = "An unknown error occurred.";
+
+        if (err instanceof Error) {
+            errorMessage = err.message;
+        }
         return (
             <div className="flex justify-center items-center text-red-500">
-                Error loading locations: {err.message}
+                Error loading locations: {errorMessage}
             </div>
         );
     }

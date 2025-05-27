@@ -6,7 +6,7 @@ import {revalidatePath} from "next/cache";
 
 import {and, eq} from "drizzle-orm";
 
-export async function rentBook(_: any, formData: FormData) {
+export async function rentBook(_: unknown, formData: FormData) {
     const inventoryId = Number(formData.get("inventoryId"));
     const userId = Number(formData.get("userId"));
     const locationId = Number(formData.get("locationId"));
@@ -19,13 +19,18 @@ export async function rentBook(_: any, formData: FormData) {
 
         revalidatePath(`/locations/${locationId}`);
         return {message: `Rented book with inventoryId ${inventoryId}`};
-    } catch (error: any) {
+    } catch (error: unknown) {
+        let errorMessage = "An unknown error occurred.";
+
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
         console.error("Error renting book:", error);
-        return {message: error.message};
+        return {message: errorMessage};
     }
 }
 
-export async function returnBook(_: any, formData: FormData) {
+export async function returnBook(_: unknown, formData: FormData) {
     const inventoryId = Number(formData.get("inventoryId"));
     const userId = Number(formData.get("userId"));
     const locationId = Number(formData.get("locationId"));
@@ -38,8 +43,13 @@ export async function returnBook(_: any, formData: FormData) {
 
         revalidatePath(`/locations/${locationId}`);
         return {message: `Returned book with inventoryId ${inventoryId}`};
-    } catch (error: any) {
+    } catch (error: unknown) {
+        let errorMessage = "An unknown error occurred.";
+
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
         console.error("Error returning book:", error);
-        return {message: error.message};
+        return {message: errorMessage};
     }
 }

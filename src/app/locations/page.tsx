@@ -57,7 +57,12 @@ export default async function LocationsPage() {
                 )}
             </div>
         );
-    } catch (err: any) {
+    } catch (err: unknown) {
+        let errorMessage = "An unknown error occurred.";
+
+        if (err instanceof Error) {
+            errorMessage = err.message;
+        }
         return (
             <div
                 className="flex justify-center items-center min-h-screen text-center px-4"
@@ -65,7 +70,7 @@ export default async function LocationsPage() {
             >
                 <div>
                     <h2 className="text-2xl font-semibold mb-2">Error loading locations</h2>
-                    <p>{err.message}</p>
+                    <p>{errorMessage}</p>
                 </div>
             </div>
         );

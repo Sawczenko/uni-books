@@ -2,13 +2,11 @@ import {db} from "@/db"; // Adjust the import path to your db connection
 import {books} from "@/db/schema"; // Import necessary tables
 import Link from "next/link";
 
-export default async function BooksPage({
-                                            searchParams,
-                                        }: {
-    searchParams: { title?: string; author?: string; availableOnly?: string };
-}) {
-    try {
+type Params = Promise<{ title?: string; author?: string; availableOnly?: string }>
 
+export default async function BooksPage(props: { params: Params }) {
+    try {
+        const searchParams = await props.params;
         const titleFilter = (searchParams?.title ?? "").toLowerCase();
         const authorFilter = (searchParams?.author ?? "").toLowerCase();
         const onlyAvailable = searchParams?.availableOnly === "true";
@@ -99,10 +97,17 @@ export default async function BooksPage({
                 )}
             </div>
         );
-    } catch (error: any) {
+    } catch (error: unknown) {
+
+        let errorMessage = "An unknown error occurred.";
+
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+
         return (
             <div className="flex justify-center items-center min-h-screen text-red-500">
-                Error loading books: {error.message}
+                Error loading books: {errorMessage}
             </div>
         );
     }

@@ -82,10 +82,17 @@ export default async function LocationsPage() {
                 </div>
             </div>
         );
-    } catch (err: any) {
+    } catch (err: unknown) {
+
+        let errorMessage = "An unknown error occurred.";
+
+        if (err instanceof Error) {
+            errorMessage = err.message;
+        }
+
         return (
             <div className="flex justify-center items-center min-h-screen text-red-500">
-                Error loading rentals: {err.message}
+                Error loading rentals: {errorMessage}
             </div>
         );
     }

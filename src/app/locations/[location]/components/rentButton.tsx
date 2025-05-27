@@ -12,7 +12,7 @@ export function RentButton({
     userId: number;
     locationId: number;
 }) {
-    const [_, rentAction] = useActionState(rentBook, null);
+    const [, rentAction] = useActionState(rentBook, null);
 
     return (
         <form action={rentAction}>
@@ -38,7 +38,7 @@ export function ReturnButton({
     userId: number;
     locationId: number;
 }) {
-    const [_, returnAction] = useActionState(returnBook, null);
+    const [, returnAction] = useActionState(returnBook, null);
 
     return (
         <form action={returnAction}>
