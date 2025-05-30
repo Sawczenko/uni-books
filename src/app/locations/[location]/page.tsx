@@ -2,8 +2,8 @@ import SearchForm from "./components/searchForm";
 import BookAtLocation from "./components/bookAtLocation";
 import {getCurrentSession} from "@/app/auth/session";
 import {db} from "@/db";
-import {inventory, books, locations, users} from "@/db/schema";
-import {eq, count} from "drizzle-orm";
+import {inventory, books, locations} from "@/db/schema";
+import {eq} from "drizzle-orm";
 
 type SearchParams = {
   searchParams: Promise<{searchTerm: string}>
