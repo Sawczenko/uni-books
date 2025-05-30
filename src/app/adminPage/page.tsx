@@ -37,21 +37,33 @@ export default async function AdminPage() {
       .from(users)
       .execute();
 
-    // 3. All rentals joined with book titles
+    // 3. All rentals joined with book titles + rentalDate
     const rentalRows = await db
       .select({
         userId: rentals.userId,
         bookTitle: books.title,
+        rentalDate: rentals.rentalDate,
       })
       .from(rentals)
       .innerJoin(inventory, eq(rentals.inventoryId, inventory.id))
       .innerJoin(books, eq(inventory.bookId, books.id))
       .execute();
 
-    // Group rentals by user
-    const userMap = new Map<number, { username: string; rentals: string[] }>();
-    allUsers.forEach((u) => userMap.set(u.id, { username: u.username, rentals: [] }));
-    rentalRows.forEach((r) => userMap.get(r.userId)?.rentals.push(r.bookTitle));
+    // Group rentals by user, obliczając liczbę dni od wypożyczenia
+    type RentalInfo = { title: string; daysRented: number };
+    const userMap = new Map<number, { username: string; rentals: RentalInfo[] }>();
+
+    allUsers.forEach((u) =>
+      userMap.set(u.id, { username: u.username, rentals: [] as RentalInfo[] })
+    );
+
+    rentalRows.forEach((r) => {
+      const days = Math.floor(
+        (Date.now() - new Date(r.rentalDate).getTime()) / (1000 * 60 * 60 * 24)
+      );
+      userMap.get(r.userId)
+        ?.rentals.push({ title: r.bookTitle, daysRented: days });
+    });
 
     return (
       <div className="container mx-auto px-6 py-10 space-y-8">
@@ -85,9 +97,9 @@ export default async function AdminPage() {
               >
                 <h3 className="text-xl font-semibold mb-2">{u.username}</h3>
                 <ul className="list-disc list-inside space-y-1">
-                  {u.rentals.map((title, i) => (
+                  {u.rentals.map((r, i) => (
                     <li key={i} className="text-gray-700">
-                      {title}
+                      {r.title} – wypożyczone {r.daysRented} dni temu
                     </li>
                   ))}
                 </ul>

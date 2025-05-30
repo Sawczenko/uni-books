@@ -24,7 +24,7 @@ export default async function BookAtLocation({
             .where(
                 and(eq(inventory.bookId, bookId), eq(inventory.locationId, locationId)),
             )
-            .groupBy(inventory.id);
+            .groupBy(inventory.id, books.title);
 
         const totalQuantity = inventoryItems.reduce(
             (sum, item) => sum + item.quantity,
