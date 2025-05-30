@@ -1,7 +1,7 @@
 "use client";
 
-import {useState} from "react";
-import {useRouter, useSearchParams} from "next/navigation";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SearchForm() {
     const router = useRouter();
@@ -17,17 +17,20 @@ export default function SearchForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mb-6 flex items-center">
+        <form
+            onSubmit={handleSubmit}
+            className="mb-6 flex items-center gap-2"
+        >
             <input
                 type="text"
                 placeholder="Book search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="border border-gray-300 rounded-l-md px-3 py-2 w-full max-w-md"
+                className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
             />
             <button
                 type="submit"
-                className="bg-blue-600 text-white rounded-r-md px-4 py-2"
+                className="bg-blue-500 text-white rounded px-4 py-2"
             >
                 Search
             </button>

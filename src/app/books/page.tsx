@@ -2,19 +2,17 @@ import { db } from "@/db"; // Adjust the import path to your db connection
 import { books, inventory } from "@/db/schema"; // Import necessary tables
 import Link from "next/link";
 
-export default async function BooksPage({
-  searchParams,
-}: {
-  searchParams?: {
-    title?: string;
-    author?: string;
-    availableOnly?: string;
-  };
-}) {
+type Props = {
+    searchParams: Promise<{title: string, author: string, availableOnly: string}>
+}
+
+export default async function BooksPage({ searchParams }: Props) {
   try {
-    const titleFilter = (searchParams?.title ?? "").toLowerCase();
-    const authorFilter = (searchParams?.author ?? "").toLowerCase();
-    const onlyAvailable = searchParams?.availableOnly === "true";
+
+      const search = await searchParams;
+    const titleFilter = (search?.title ?? "").toLowerCase();
+    const authorFilter = (search?.author ?? "").toLowerCase();
+    const onlyAvailable = search?.availableOnly === "true";
     let booksData = await db.select().from(books);
 
     // Filtering by title and author
@@ -48,14 +46,14 @@ export default async function BooksPage({
             type="text"
             name="title"
             placeholder="Search by title"
-            defaultValue={searchParams?.title}
+            defaultValue={search?.title}
             className="border border-gray-300 rounded px-3 py-2 w-full md:w-1/3"
           />
           <input
             type="text"
             name="author"
             placeholder="Search by author"
-            defaultValue={searchParams?.author}
+            defaultValue={search?.author}
             className="border border-gray-300 rounded px-3 py-2 w-full md:w-1/3"
           />
           <label className="flex items-center gap-2">
@@ -63,7 +61,7 @@ export default async function BooksPage({
               type="checkbox"
               name="availableOnly"
               value="true"
-              defaultChecked={searchParams?.availableOnly === "true"}
+              defaultChecked={search?.availableOnly === "true"}
               className="accent-blue-600"
             />
             Only available

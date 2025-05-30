@@ -2,21 +2,38 @@ import SearchForm from "./components/searchForm";
 import BookAtLocation from "./components/bookAtLocation";
 import {getCurrentSession} from "@/app/auth/session";
 import {db} from "@/db";
-import {inventory, books} from "@/db/schema";
+import {inventory, books, locations} from "@/db/schema";
 import {eq} from "drizzle-orm";
 
-export default async function LocationPage({
-  params,
-  searchParams,
-}: {
-  params: { location: string };
-  searchParams?: { searchTerm?: string };
-}) {
-  const locId = parseInt(params.location, 10);
+type SearchParams = {
+  searchParams: Promise<{searchTerm: string}>
+  params: Promise<{location: string}>
+}
+
+export default async function LocationPage({ searchParams, params }: SearchParams) {
+
+  const search = await searchParams;
+  const parameters = await params;
+  const locId = parseInt(parameters.location, 10);
   const { user } = await getCurrentSession();
   const userId = user?.id ?? 0;
 
-  // 1. Fetch all unique books available at this location
+
+  const locationData = await db
+      .select({
+        name: locations.name,
+        address: locations.address,
+      })
+      .from(locations)
+      .where(eq(locations.id, locId));
+  if (locationData.length === 0) {
+    return (
+        <div className="flex justify-center items-center text-red-500">
+          Location not found.
+        </div>
+    );
+  }
+
   const allBooks = await db
     .select({ id: books.id, title: books.title })
     .from(inventory)
@@ -25,17 +42,21 @@ export default async function LocationPage({
     .groupBy(books.id)
     .execute();
 
-  // 2. Extract searchTerm and filter by title (case-insensitive)
-  const term = searchParams?.searchTerm?.toLowerCase().trim() ?? "";
+  const term = search?.searchTerm?.toLowerCase().trim() ?? "";
   const filtered = allBooks.filter((b) =>
     term === "" ? true : b.title.toLowerCase().includes(term)
   );
 
+  const locationName = locationData[0].name;
+
   return (
-    <div className="px-6 py-10">
-      <SearchForm />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {filtered.map((b) => (
+      <div className="container mx-auto px-4 py-6">
+        <SearchForm />
+        <h2 className="text-xl font-semibold text-gray-800 mt-4">
+          {locationName}
+        </h2>
+        <div className="grid mt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filtered.map((b) => (
           <BookAtLocation
             key={b.id}
             bookId={b.id}
