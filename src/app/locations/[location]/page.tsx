@@ -2,8 +2,8 @@ import SearchForm from "./components/searchForm";
 import BookAtLocation from "./components/bookAtLocation";
 import {getCurrentSession} from "@/app/auth/session";
 import {db} from "@/db";
-import {inventory, books, locations} from "@/db/schema";
-import {eq} from "drizzle-orm";
+import {inventory, books, locations, users} from "@/db/schema";
+import {eq, count} from "drizzle-orm";
 
 type SearchParams = {
   searchParams: Promise<{searchTerm: string}>
@@ -35,7 +35,7 @@ export default async function LocationPage({ searchParams, params }: SearchParam
   }
 
   const allBooks = await db
-    .select({ id: books.id, title: books.title })
+    .select({ id: books.id, title: books.title, author: books.author })
     .from(inventory)
     .innerJoin(books, eq(inventory.bookId, books.id))
     .where(eq(inventory.locationId, locId))
@@ -44,7 +44,7 @@ export default async function LocationPage({ searchParams, params }: SearchParam
 
   const term = search?.searchTerm?.toLowerCase().trim() ?? "";
   const filtered = allBooks.filter((b) =>
-    term === "" ? true : b.title.toLowerCase().includes(term)
+    term === "" ? true : (b.title.toLowerCase().includes(term) || b.author.toLowerCase().includes(term))
   );
 
   const locationName = locationData[0].name;
