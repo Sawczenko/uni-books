@@ -47,7 +47,7 @@ export function ReturnButton({
             <input type="hidden" name="locationId" value={locationId}/>
             <button
                 type="submit"
-                className="rounded-lg shadow-md p-2 text-white font-bold bg-blue-500 hover:bg-blue-700"
+                className="rounded-lg shadow-md p-2 text-white font-bold bg-green-500 hover:bg-green-700"
             >
                 Return
             </button>

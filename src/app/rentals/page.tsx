@@ -70,7 +70,7 @@ export default async function LocationsPage() {
                                 </p>
                             </div>
 
-                            <div className="mt-6">
+                            <div className="mt-6 flex justify-end">
                                 <ReturnButton
                                     inventoryId={rentals.inventoryId}
                                     userId={user.id}
