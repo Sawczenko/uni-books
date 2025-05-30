@@ -65,6 +65,7 @@ export const registerAction = async (
     try {
         const login = formData.get("username");
         const password = formData.get("password");
+
         if (typeof login !== "string" || typeof password !== "string") {
             return {
                 code: 400,
@@ -73,7 +74,7 @@ export const registerAction = async (
         }
 
         const existingUser = await db
-            .select({id: users.id})
+            .select({ id: users.id })
             .from(users)
             .where(eq(users.username, login))
             .limit(1)
@@ -88,32 +89,38 @@ export const registerAction = async (
 
         const passwordHash = await bcrypt.hash(password, 10);
 
-        const {insertId} = (
-            await db.insert(users).values({
+        const insertedUsers = await db
+            .insert(users)
+            .values({
                 username: login,
                 passwordHash,
             })
-        )[0];
+            .returning({ id: users.id });
 
-        const user = await db
-            .select({id: users.id})
-            .from(users)
-            .where(eq(users.id, insertId))
-            .limit(1)
-            .execute();
+        const newUser = insertedUsers?.[0];
+
+        if (!newUser) {
+            return {
+                code: 500,
+                message: "Failed to create user",
+            };
+        }
 
         const sessionToken = generateSessionToken();
-        const session = await createSession(sessionToken, user[0].id);
+        const session = await createSession(sessionToken, newUser.id);
+
         (await cookies()).set("session", sessionToken, {
             expires: session.expiresAt,
         });
+
     } catch (error) {
-        console.error("Error during login action:", error);
+        console.error("Error during registration action:", error);
         return {
             code: 500,
             message: "Internal server error",
         };
     }
+
     redirect("/");
 };
 
