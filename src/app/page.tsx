@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { getCurrentSession } from "./auth/session"; // DODANE
 
-export default function Home() {
+export default async function Home() {
+    const { user } = await getCurrentSession();     // DODANE
+    const isAdmin = user?.username === "admin";     // DODANE
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
             <main className="max-w-md w-full space-y-8 text-center">
@@ -38,6 +42,15 @@ export default function Home() {
                     >
                         Browse Books
                     </Link>
+
+                    {isAdmin && (  // DODANE
+                        <Link
+                            href="/adminPage"
+                            className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+                        >
+                            Admin Dashboard
+                        </Link>
+                    )}
                 </div>
             </main>
         </div>
