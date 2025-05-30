@@ -76,13 +76,14 @@ export default async function AdminPage() {
         </section>
 
         <section className="grid gap-6">
-          {[...userMap.values()].map((u) => (
-            <div
-              key={u.username}
-              className="p-6 bg-white rounded-2xl shadow-md"
-            >
-              <h3 className="text-xl font-semibold mb-2">{u.username}</h3>
-              {u.rentals.length > 0 ? (
+          {[...userMap.values()]
+            .filter((u) => u.rentals.length > 0)
+            .map((u) => (
+              <div
+                key={u.username}
+                className="p-6 bg-white rounded-2xl shadow-md"
+              >
+                <h3 className="text-xl font-semibold mb-2">{u.username}</h3>
                 <ul className="list-disc list-inside space-y-1">
                   {u.rentals.map((title, i) => (
                     <li key={i} className="text-gray-700">
@@ -90,11 +91,8 @@ export default async function AdminPage() {
                     </li>
                   ))}
                 </ul>
-              ) : (
-                <p className="text-gray-500">No rentals</p>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
         </section>
       </div>
     );
