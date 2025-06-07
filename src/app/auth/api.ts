@@ -73,7 +73,6 @@ export function setSessionTokenCookie(
     token: string,
     expiresAt: Date,
 ): void {
-    // When deployed over HTTP (localhost)
     response.setHeaders(
         new Map([
             [

@@ -16,14 +16,12 @@ export default async function AdminPage() {
   }
 
   try {
-    // 1. Total number of books in inventory
     const totalResult = await db
       .select({ totalBooks: count() })
       .from(inventory)
       .execute();
     const totalBooks = totalResult[0]?.totalBooks ?? 0;
 
-    // 1a. Breakdown of inventory by specific book
     const stockByBook = await db
       .select({ title: books.title, inStock: count() })
       .from(inventory)
@@ -31,13 +29,11 @@ export default async function AdminPage() {
       .groupBy(books.title)
       .execute();
 
-    // 2. All users
     const allUsers = await db
       .select({ id: users.id, username: users.username })
       .from(users)
       .execute();
 
-    // 3. All rentals joined with book titles + rentalDate
     const rentalRows = await db
       .select({
         userId: rentals.userId,
@@ -49,7 +45,6 @@ export default async function AdminPage() {
       .innerJoin(books, eq(inventory.bookId, books.id))
       .execute();
 
-    // Group rentals by user, obliczając liczbę dni od wypożyczenia
     type RentalInfo = { title: string; daysRented: number };
     const userMap = new Map<number, { username: string; rentals: RentalInfo[] }>();
 

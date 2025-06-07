@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { getCurrentSession } from "./auth/session"; // DODANE
+import { getCurrentSession } from "./auth/session";
 
 export default async function Home() {
-    const { user } = await getCurrentSession();     // DODANE
-    const isAdmin = user?.username === "admin";     // DODANE
+    const { user } = await getCurrentSession();     
+    const isAdmin = user?.username === "admin";
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -43,7 +43,7 @@ export default async function Home() {
                         Browse Books
                     </Link>
 
-                    {isAdmin && (  // DODANE
+                    {isAdmin && (
                         <Link
                             href="/adminPage"
                             className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700"

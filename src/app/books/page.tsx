@@ -1,5 +1,5 @@
-import { db } from "@/db"; // Adjust the import path to your db connection
-import { books, inventory } from "@/db/schema"; // Import necessary tables
+import { db } from "@/db";
+import { books, inventory } from "@/db/schema";
 import Link from "next/link";
 
 type Props = {
@@ -15,14 +15,12 @@ export default async function BooksPage({ searchParams }: Props) {
     const onlyAvailable = search?.availableOnly === "true";
     let booksData = await db.select().from(books);
 
-    // Filtering by title and author
     booksData = booksData.filter(
       (b) =>
         b.title.toLowerCase().includes(titleFilter) &&
         b.author.toLowerCase().includes(authorFilter)
     );
 
-    // Optional: filter only those with inventory items
     if (onlyAvailable) {
       const availableBookIds = new Set<number>();
       const inventoryData = await db
